@@ -1,0 +1,23 @@
+Pipeline {
+    agent {"label Jdk-17-mvn-3.6.3"}
+    triggers {
+        pollSCM ("* * * * *")
+    }
+    stages {
+        stage ('VSC') {
+            steps {
+                git branch 'devlop'
+                url: 'https://github.com/imsimranmohanty/StudentCoursesRestAPI.git'
+            }
+        }
+        stage ('build')
+        steps {
+            sh 'docker image build -t simranmohanty/spc1:latest .'
+        }
+        stage ('scan')
+        steps {
+            sh 'echo docker scan simranmohanty/spc1:latest'
+            sh 'docker image push 'simranmohanty/spc1:latest'
+        }
+    }
+}
